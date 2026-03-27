@@ -1,0 +1,62 @@
+/* =========================
+   POKEMON STARTER SELECTOR
+========================= */
+
+.pok-starter-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .pok-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Horizontal layout */
+  .pok-starter-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap; /* responsive */
+  }
+  
+  /* Card styling */
+  .pok-card {
+    width: 200px;
+    padding: 15px;
+    border-radius: 16px;
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 3px solid transparent;
+  }
+  
+  .pok-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+  }
+  
+  .pok-card p {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  /* Hover effect */
+  .pok-card:hover {
+    transform: scale(1.08);
+  }
+  
+  /* Selected state */
+  .pok-card.pok-selected {
+    border: 3px solid #ffcc00;
+    background: #fff8dc;
+    transform: scale(1.1);
+  }
+  
+  /* Result text */
+  .pok-result {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }

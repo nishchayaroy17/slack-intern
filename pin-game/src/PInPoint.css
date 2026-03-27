@@ -1,0 +1,226 @@
+/* =========================
+   GLOBAL PAGE
+========================= */
+.page {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    /* background: linear-gradient(135deg, #9f172a, #1e293b); */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", sans-serif;
+    color: #e2e8f0;
+    width: 100%;
+  }
+  
+  
+  /* =========================
+     MAIN HUB (GamingPage)
+  ========================= */
+  .main-card {
+    width: min(1200px, 95vw);
+    padding: 32px;
+    border-radius: 20px;
+
+    background: none;        /* no background */
+    backdrop-filter: none;   /* remove blur */
+    box-shadow: none;        /* remove shadow */
+    border: none;            /* ensure no border */
+} 
+  
+  /* Title */
+  .hub-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  /* Grid */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 32px;
+  }
+  
+  @media (max-width: 768px) {
+    .games-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Each game section (flattened) */
+  .inner-game {
+    padding: 0;
+  }
+  
+  /* Section heading */
+  .game-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: #cbd5f5;
+  }
+  
+  
+  /* =========================
+     GAME CARD (PinPoint / MascotGuess)
+  ========================= */
+  .card {
+    width: 80%;
+    padding: 18px;
+    border-radius: 14px;
+    max-width: 520px;
+    margin:0 auto;
+  
+    background: rgba(255, 255, 255, 0.03);
+  }
+  
+  
+  /* =========================
+     HINT STACK
+  ========================= */
+  .hint-stack {
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .hint-row {
+    padding: 14px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    color: #cbd5f5;
+  
+    transition: all 0.2s ease;
+  }
+  
+  /* subtle divider instead of heavy borders */
+  .hint-row:not(:last-child) {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  /* Active hint */
+  .hint-row.active {
+    transform: scale(1.02);
+    background: rgba(59, 130, 246, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+  }
+  
+  /* Hint pill */
+  .hint-text {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+  
+  
+  /* =========================
+     CATEGORY TAG
+  ========================= */
+  .category {
+    margin-top: 12px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 500;
+  
+    background: rgba(59, 130, 246, 0.12);
+    color: #93c5fd;
+    border-radius: 8px;
+  }
+  
+  
+  /* =========================
+     INPUT + BUTTON
+  ========================= */
+  .input-box {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+  
+    background: rgba(255,255,255,0.06);
+    color: #e2e8f0;
+  }
+  
+  .input::placeholder {
+    color: #64748b;
+  }
+  
+  .input:focus {
+    outline: 1px solid #3b82f6;
+  }
+  
+  /* Button */
+  .button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+  
+    background: #3b82f6;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+  
+    transition: all 0.15s ease;
+  }
+  
+  .button:hover {
+    background: #2563eb;
+  }
+  
+  .button:active {
+    transform: scale(0.96);
+  }
+  
+  
+  /* =========================
+     RESULT TEXT
+  ========================= */
+  .result {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .result.win {
+    color: #22c55e;
+  }
+  
+  .result.lose {
+    color: #ef4444;
+  }
+  
+  
+  /* =========================
+     FLAG / IMAGE DISPLAY
+  ========================= */
+  .flag-container {
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  
+  .flag-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  
+    border-radius: 10px;
+    opacity: 0.85;
+  
+    transition: all 0.3s ease;
+  }
+  
+  /* Reveal effect */
+  .flag-container img.reveal {
+    opacity: 1;
+    transform: scale(1.01);
+  }
