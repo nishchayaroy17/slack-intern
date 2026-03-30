@@ -41,7 +41,7 @@ export default function StarterSelector({ playerName, selectedGroup, onGroupSele
 
         {selected && (
           <div className="pok-confirm-area">
-            <div className="pok-result">You chose {selected.name}!</div>
+            <div className="pok-result">{selected.name} is ready!</div>
             <button className="pok-continue" onClick={onConfirm}>
               Continue →
             </button>

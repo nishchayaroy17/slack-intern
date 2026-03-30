@@ -29,9 +29,26 @@ function WheelPage({ group, theme, onComplete }) {
         color: "#e2e8f0",
       }}
     >
-      <h2 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: 8, color: "#f1f5f9" }}>
+      <h2 style={{
+        fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+        fontWeight: 400,
+        marginBottom: 4,
+        color: "#f0ecd8",
+        letterSpacing: "-0.5px",
+      }}>
         Spin The Wheel
       </h2>
+      <p style={{
+        fontSize: "0.75rem",
+        fontFamily: "system-ui, 'Segoe UI', sans-serif",
+        fontWeight: 700,
+        letterSpacing: "0.2em",
+        textTransform: "uppercase",
+        color: theme.accent,
+        margin: "0 0 8px",
+      }}>
+        Choose your challenge
+      </p>
 
       <WheelComponent
         setActiveIndex={setActiveIndex}
@@ -53,40 +70,54 @@ function WheelPage({ group, theme, onComplete }) {
         {mascots.map((src, index) => {
           const isActive = index === activeIndex;
           const isWinner = index === winnerIndex;
+          const dimmed = winnerIndex !== null && !isWinner;
 
           return (
             <div
               key={index}
               style={{
-                padding: 10,
+                padding: 12,
                 borderRadius: "20px",
                 transition: "all 0.3s ease",
                 border: isWinner
-                  ? `6px solid ${theme.wheelWinner}`
+                  ? `3px solid ${theme.accent}`
                   : isActive
-                  ? `4px solid ${theme.wheelActive}`
-                  : "4px solid transparent",
-                transform: isActive ? "scale(1.15)" : "scale(1)",
-                opacity: winnerIndex !== null && !isWinner ? 0.5 : 1,
-                background: "#fff",
+                  ? `3px solid ${theme.wheelActive}`
+                  : "3px solid rgba(255,255,255,0.06)",
+                transform: isActive ? "scale(1.15)" : isWinner ? "scale(1.08)" : "scale(1)",
+                opacity: dimmed ? 0.32 : 1,
+                background: isWinner
+                  ? `${theme.active}`
+                  : isActive
+                  ? "rgba(255,255,255,0.06)"
+                  : "rgba(255,255,255,0.03)",
+                boxShadow: isWinner
+                  ? `0 0 28px ${theme.wheelActive}55`
+                  : isActive
+                  ? `0 0 16px ${theme.wheelActive}33`
+                  : "none",
               }}
             >
               {src ? (
                 <img
                   src={src}
                   alt={`Mascot ${index + 1}`}
-                  style={{ width: 180, height: 180, objectFit: "contain", display: "block" }}
+                  style={{ width: 160, height: 160, objectFit: "contain", display: "block" }}
                 />
               ) : (
                 <div
                   style={{
-                    width: 180,
-                    height: 180,
+                    width: 160,
+                    height: 160,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#888",
-                    fontSize: 14,
+                    color: theme.accent,
+                    fontSize: 12,
+                    fontFamily: "system-ui, sans-serif",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    opacity: 0.5,
                   }}
                 >
                   Coming Soon
