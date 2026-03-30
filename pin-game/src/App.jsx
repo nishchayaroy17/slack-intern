@@ -63,7 +63,7 @@ function App() {
 
       {unlockedSection >= 2 && selectedGroup && selectedChallenge && (
         <section ref={gameRef} style={{ minHeight: '100vh' }}>
-          <GamePage group={selectedGroup} challenge={selectedChallenge} theme={theme} />
+          <GamePage group={selectedGroup} challenge={selectedChallenge} theme={theme} playerName={playerName} />
         </section>
       )}
     </div>
