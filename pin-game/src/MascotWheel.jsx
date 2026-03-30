@@ -83,16 +83,25 @@ function WheelComponent({ setActiveIndex, setWinnerIndex }) {
       }
     }, 80);
 
-    const winningItemIndex = Math.floor(
-      Math.random() * wheelRef.current.items.length
-    );
+    // Make sure we do not get the same exact number consecutively
+    let winningItemIndex;
+    const lastWinner = sessionStorage.getItem("lastWheelWinner");
+    // eslint-disable-next-line react-hooks/purity
+    do {
+      winningItemIndex = Math.floor(
+        Math.random() * wheelRef.current.items.length
+      );
+    } while (String(winningItemIndex) === lastWinner && wheelRef.current.items.length > 1);
+
+    sessionStorage.setItem("lastWheelWinner", winningItemIndex);
 
     const easing = (t) => 1 - Math.pow(1 - t, 3);
 
+    // spinToCenter = false adds variety so it doesn't always land precisely in the middle
     wheelRef.current.spinToItem(
       winningItemIndex,
       duration,
-      true,
+      false,
       2,
       1,
       easing
@@ -162,8 +171,8 @@ function WheelComponent({ setActiveIndex, setWinnerIndex }) {
             left: "50%",
             transform: "translate(-50%, -50%)",
             zIndex: 10,
-            cursor: hasSpun ? "not-allowed" : "pointer", 
-            pointerEvents: hasSpun ? "none" : "auto", 
+            cursor: hasSpun ? "not-allowed" : "pointer",
+            pointerEvents: hasSpun ? "none" : "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

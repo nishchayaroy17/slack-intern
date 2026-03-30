@@ -11,6 +11,7 @@ export default function GameHub({ group, challenge, theme = defaultTheme, player
   const [regionScore, setRegionScore] = useState(null);
   const [mascotScore, setMascotScore] = useState(null);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const scoreSaved = useRef(false);
   const leaderboardRef = useRef(null);
 
@@ -21,6 +22,10 @@ export default function GameHub({ group, challenge, theme = defaultTheme, player
   useEffect(() => {
     if (allDone && !scoreSaved.current) {
       scoreSaved.current = true;
+      setTimeout(() => {
+        setShowPopup(true);
+      }, 500); // 0.5 seconds delay before showing the popup
+
       saveScore(playerName, regionScore, mascotScore).then(() => {
         setShowLeaderboard(true);
         setTimeout(() => {
@@ -67,6 +72,19 @@ export default function GameHub({ group, challenge, theme = defaultTheme, player
         {showLeaderboard && (
           <div ref={leaderboardRef}>
             <Leaderboard playerName={playerName} playerScore={totalScore} />
+          </div>
+        )}
+
+        {showPopup && (
+          <div className="popup-overlay">
+            <div className="popup-content card">
+              <h2>You have completed the quiz!</h2>
+              <div className="score-card">
+                <h3>Your Score</h3>
+                <p className="final-score">{totalScore}</p>
+              </div>
+              <button className="base-button" onClick={() => setShowPopup(false)}>Close</button>
+            </div>
           </div>
         )}
       </div>
