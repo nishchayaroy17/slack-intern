@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./PInPoint.css";
 import { getTextContent, getDarkFlagUrl, getImageUrl } from "./assetMap";
 
-export default function PinPoint({ group, challenge }) {
+export default function PinPoint({ group, challenge, onWin }) {
   const [hints, setHints] = useState([]);
   const [answer, setAnswer] = useState("");
   const [currentHintIndex, setCurrentHintIndex] = useState(0);
@@ -33,7 +33,10 @@ export default function PinPoint({ group, challenge }) {
         setReveal(true);
       }, 200);
     }
-  }, [status, group, challenge]);
+    if (status === "won" && onWin) {
+      onWin();
+    }
+  }, [status, group, challenge, onWin]);
 
   const handleSubmit = () => {
     if (!guess.trim()) return;

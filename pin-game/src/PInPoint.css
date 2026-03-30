@@ -243,4 +243,39 @@
     color: #ef4444;
   }
 
+
+  /* =========================
+     LOCKED STATE
+  ========================= */
+  .inner-game.locked {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .locked-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+  }
+
+  .locked-message {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: system-ui, 'Segoe UI', sans-serif;
+  }
+
+  .locked-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .locked-message p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
   
