@@ -24,7 +24,7 @@ export default function GameHub({ group, challenge, theme = defaultTheme, player
       scoreSaved.current = true;
       setTimeout(() => {
         setShowPopup(true);
-      }, 500); // 0.5 seconds delay before showing the popup
+      }, 500); // 
 
       saveScore(playerName, regionScore, mascotScore).then(() => {
         setShowLeaderboard(true);
