@@ -1,5 +1,6 @@
-const API_URL = "https://api.restful-api.dev/objects";
-const OBJECT_ID = "ff8081819d150699019d3f604d224b9c";
+const API_URL = "https://api.jsonbin.io/v3/b";
+const BIN_ID = "69cac42136566621a8625c34";
+const MASTER_KEY = "$2a$10$j2dhEtBuiae8ufVIkzXwLu8q4yZokRXaJ/IoV2UXFn8dYqYQ4IcNO";
 
 export async function saveScore(name, pinpointScore, mascotScore) {
   try {
@@ -13,13 +14,13 @@ export async function saveScore(name, pinpointScore, mascotScore) {
     });
     scores.sort((a, b) => b.totalScore - a.totalScore);
 
-    await fetch(`${API_URL}/${OBJECT_ID}`, {
+    await fetch(`${API_URL}/${BIN_ID}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "pin-game-leaderboard",
-        data: { scores },
-      }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": MASTER_KEY
+      },
+      body: JSON.stringify({ scores }),
     });
   } catch (e) {
     console.warn("Failed to save score:", e);
@@ -28,9 +29,13 @@ export async function saveScore(name, pinpointScore, mascotScore) {
 
 export async function getLeaderboard(max = 20) {
   try {
-    const res = await fetch(`${API_URL}/${OBJECT_ID}`);
+    const res = await fetch(`${API_URL}/${BIN_ID}`, {
+      headers: {
+        "X-Master-Key": MASTER_KEY
+      }
+    });
     const json = await res.json();
-    return (json.data?.scores || []).slice(0, max);
+    return (json.record?.scores || []).slice(0, max);
   } catch {
     return [];
   }
