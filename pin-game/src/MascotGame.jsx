@@ -1,84 +1,70 @@
 import { useEffect, useState } from "react";
-import "./PinPoint.css";
+import "./PInPoint.css";
+import { getTextContent, getImageUrl } from "./assetMap";
 
-export default function MascotGame() {
+export default function MascotGame({ group, challenge }) {
   const [hints, setHints] = useState([]);
   const [answer, setAnswer] = useState("");
   const [currentHintIndex, setCurrentHintIndex] = useState(0);
   const [guess, setGuess] = useState("");
   const [status, setStatus] = useState("playing");
-
-  const [imageSrc, setImageSrc] = useState("src/assets/g1/c1-guess.png");
+  const [imageSrc, setImageSrc] = useState(null);
   const [reveal, setReveal] = useState(false);
 
+  // Load assets whenever group or challenge changes
   useEffect(() => {
-    fetch("src/assets/g1/c1-mascot.txt")
-      .then((res) => res.text())
-      .then((text) => {
-        const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-        setHints(lines.slice(0, 5));
-        setAnswer(lines[5]?.toLowerCase());
-      });
-  }, []);
+    const text = getTextContent(group, challenge, "mascot");
+    if (text) {
+      const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+      setHints(lines.slice(0, 5));
+      setAnswer(lines[5]?.toLowerCase() ?? "");
+    }
+    setImageSrc(getImageUrl(group, challenge, "guess"));
+    setReveal(false);
+    setStatus("playing");
+    setCurrentHintIndex(0);
+    setGuess("");
+  }, [group, challenge]);
 
   useEffect(() => {
     if (status === "won" || status === "lost") {
       setTimeout(() => {
-        setImageSrc("src/assets/g1/c1-answer.png");
+        setImageSrc(getImageUrl(group, challenge, "mascot"));
         setReveal(true);
       }, 200);
     }
-  }, [status]);
+  }, [status, group, challenge]);
 
   const handleSubmit = () => {
     if (!guess.trim()) return;
-
     if (guess.toLowerCase() === answer) {
       setStatus("won");
+    } else if (currentHintIndex < hints.length - 1) {
+      setCurrentHintIndex((prev) => prev + 1);
     } else {
-      if (currentHintIndex < hints.length - 1) {
-        setCurrentHintIndex((prev) => prev + 1);
-      } else {
-        setStatus("lost");
-      }
+      setStatus("lost");
     }
     setGuess("");
   };
 
   return (
     <div className="card">
-
-      {/* Mascot Image */}
       <div className="flag-container">
-        <img
-          src={imageSrc}
-          alt="mascot"
-          className={reveal ? "reveal" : ""}
-        />
+        <img src={imageSrc ?? ""} alt="mascot" className={reveal ? "reveal" : ""} />
       </div>
 
-      {/* Hints */}
       <div className="hint-stack">
         {hints.map((hint, index) => {
           if (index > currentHintIndex) return null;
-
           const isActive = index === currentHintIndex;
-
           return (
-            <div
-              key={index}
-              className={`hint-row ${isActive ? "active" : ""}`}
-            >
+            <div key={index} className={`hint-row ${isActive ? "active" : ""}`}>
               <span className="hint-text">{hint}</span>
             </div>
           );
         })}
       </div>
 
-      {/* Category */}
-      {/* <div className="category">Guess the Mascot</div> */}
-
-      {/* Input */}
       {status === "playing" && (
         <div className="input-box">
           <input
@@ -94,14 +80,8 @@ export default function MascotGame() {
         </div>
       )}
 
-      {/* Results */}
-      {status === "won" && (
-        <div className="result win">Correct!</div>
-      )}
-      {status === "lost" && (
-        <div className="result lose">Answer: {answer}</div>
-      )}
-
+      {status === "won" && <div className="result win">Correct!</div>}
+      {status === "lost" && <div className="result lose">Answer: {answer}</div>}
     </div>
   );
 }

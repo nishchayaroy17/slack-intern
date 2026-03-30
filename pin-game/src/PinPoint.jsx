@@ -1,84 +1,70 @@
 import { useEffect, useState } from "react";
-import "./PinPoint.css";
+import "./PInPoint.css";
+import { getTextContent, getDarkFlagUrl, getImageUrl } from "./assetMap";
 
-export default function PinPoint() {
+export default function PinPoint({ group, challenge }) {
   const [hints, setHints] = useState([]);
   const [answer, setAnswer] = useState("");
   const [currentHintIndex, setCurrentHintIndex] = useState(0);
   const [guess, setGuess] = useState("");
   const [status, setStatus] = useState("playing");
-
-  const [flagSrc, setFlagSrc] = useState("src/assets/g1/darkflag.png");
+  const [flagSrc, setFlagSrc] = useState(null);
   const [reveal, setReveal] = useState(false);
 
+  // Load assets whenever group or challenge changes
   useEffect(() => {
-    fetch("src/assets/g1/c1-pinpoint.txt")
-      .then((res) => res.text())
-      .then((text) => {
-        const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-        setHints(lines.slice(0, 5));
-        setAnswer(lines[5]?.toLowerCase());
-      });
-  }, []);
+    const text = getTextContent(group, challenge, "pinpoint");
+    if (text) {
+      const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+      setHints(lines.slice(0, 5));
+      setAnswer(lines[5]?.toLowerCase() ?? "");
+    }
+    setFlagSrc(getDarkFlagUrl(group));
+    setReveal(false);
+    setStatus("playing");
+    setCurrentHintIndex(0);
+    setGuess("");
+  }, [group, challenge]);
 
   useEffect(() => {
     if (status === "won" || status === "lost") {
       setTimeout(() => {
-        setFlagSrc("src/assets/g1/c1-flag.png");
+        setFlagSrc(getImageUrl(group, challenge, "flag"));
         setReveal(true);
       }, 200);
     }
-  }, [status]);
+  }, [status, group, challenge]);
 
   const handleSubmit = () => {
     if (!guess.trim()) return;
-
     if (guess.toLowerCase() === answer) {
       setStatus("won");
+    } else if (currentHintIndex < hints.length - 1) {
+      setCurrentHintIndex((prev) => prev + 1);
     } else {
-      if (currentHintIndex < hints.length - 1) {
-        setCurrentHintIndex((prev) => prev + 1);
-      } else {
-        setStatus("lost");
-      }
+      setStatus("lost");
     }
     setGuess("");
   };
 
   return (
     <div className="card">
-
-      {/* Flag */}
       <div className="flag-container">
-        <img
-          src={flagSrc}
-          alt="flag"
-          className={reveal ? "reveal" : ""}
-        />
+        <img src={flagSrc ?? ""} alt="flag" className={reveal ? "reveal" : ""} />
       </div>
 
-      {/* Hints */}
       <div className="hint-stack">
         {hints.map((hint, index) => {
           if (index > currentHintIndex) return null;
-
           const isActive = index === currentHintIndex;
-
           return (
-            <div
-              key={index}
-              className={`hint-row ${isActive ? "active" : ""}`}
-            >
+            <div key={index} className={`hint-row ${isActive ? "active" : ""}`}>
               <span className="hint-text">{hint}</span>
             </div>
           );
         })}
       </div>
 
-      {/* Category */}
-      {/* <div className="category">Guess the Country</div> */}
-
-      {/* Input */}
       {status === "playing" && (
         <div className="input-box">
           <input
@@ -94,13 +80,8 @@ export default function PinPoint() {
         </div>
       )}
 
-      {/* Result */}
-      {status === "won" && (
-        <div className="result win">Correct!</div>
-      )}
-      {status === "lost" && (
-        <div className="result lose">Answer: {answer}</div>
-      )}
+      {status === "won" && <div className="result win">Correct!</div>}
+      {status === "lost" && <div className="result lose">Answer: {answer}</div>}
     </div>
   );
 }

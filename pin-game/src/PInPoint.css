@@ -71,9 +71,35 @@
     padding: 18px;
     border-radius: 14px;
     max-width: 520px;
-    margin:0 auto;
-  
+    margin: 0 auto;
     background: rgba(255, 255, 255, 0.03);
+  }
+
+
+  /* =========================
+     IMAGE / FLAG CONTAINER
+  ========================= */
+  .flag-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .flag-container img {
+    width: 180px;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+
+  .flag-container img.reveal {
+    animation: revealPop 0.4s ease forwards;
+  }
+
+  @keyframes revealPop {
+    0%   { transform: scale(0.92); opacity: 0.6; }
+    100% { transform: scale(1);    opacity: 1;   }
   }
   
   
@@ -103,7 +129,7 @@
   /* Active hint */
   .hint-row.active {
     transform: scale(1.02);
-    background: rgba(59, 130, 246, 0.12);
+    background: var(--theme-active, rgba(59, 130, 246, 0.12));
     border-radius: 8px;
     color: #ffffff;
   }
@@ -164,7 +190,7 @@
     border-radius: 8px;
     border: none;
   
-    background: #3b82f6;
+    background: var(--theme-btn, #3b82f6);
     color: white;
     font-weight: 500;
     cursor: pointer;
@@ -173,7 +199,7 @@
   }
   
   .button:hover {
-    background: #2563eb;
+    filter: brightness(0.85);
   }
   
   .button:active {
@@ -192,35 +218,10 @@
   }
   
   .result.win {
-    color: #22c55e;
+    color: var(--theme-win, #22c55e);
   }
   
   .result.lose {
     color: #ef4444;
   }
   
-  
-  /* =========================
-     FLAG / IMAGE DISPLAY
-  ========================= */
-  .flag-container {
-    width: 100%;
-    margin-bottom: 14px;
-  }
-  
-  .flag-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-  
-    border-radius: 10px;
-    opacity: 0.85;
-  
-    transition: all 0.3s ease;
-  }
-  
-  /* Reveal effect */
-  .flag-container img.reveal {
-    opacity: 1;
-    transform: scale(1.01);
-  }
